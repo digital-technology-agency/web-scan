@@ -15,7 +15,7 @@ func TestGen(t *testing.T) {
 		want int
 	}{
 		{
-			name: "Domen name generator",
+			name: "Name generator",
 			args: args{
 				alphabet: "abc",
 				len:      1,
@@ -23,7 +23,7 @@ func TestGen(t *testing.T) {
 			want: 3,
 		},
 		{
-			name: "Domen name generator",
+			name: "Name generator",
 			args: args{
 				alphabet: "abc",
 				len:      2,
@@ -31,7 +31,7 @@ func TestGen(t *testing.T) {
 			want: 12,
 		},
 		{
-			name: "Domen name generator",
+			name: "Name generator",
 			args: args{
 				alphabet: "abc",
 				len:      0,
@@ -39,7 +39,7 @@ func TestGen(t *testing.T) {
 			want: 0,
 		},
 		{
-			name: "Domen name generator",
+			name: "Name generator",
 			args: args{
 				alphabet: "",
 				len:      1,
@@ -47,7 +47,7 @@ func TestGen(t *testing.T) {
 			want: 0,
 		},
 		{
-			name: "Domen name generator",
+			name: "Name generator",
 			args: args{
 				alphabet: "",
 				len:      100,
@@ -55,7 +55,7 @@ func TestGen(t *testing.T) {
 			want: 0,
 		},
 		{
-			name: "Domen name generator",
+			name: "Name generator",
 			args: args{
 				alphabet: "abcde",
 				len:      2,
@@ -63,7 +63,7 @@ func TestGen(t *testing.T) {
 			want: 30,
 		},
 		{
-			name: "Domen name generator",
+			name: "Name generator",
 			args: args{
 				alphabet: "abcdef",
 				len:      2,
@@ -74,7 +74,7 @@ func TestGen(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			incremet := 0
-			for _ = range Gen(tt.args.alphabet, tt.args.len) {
+			for range Gen(tt.args.alphabet, tt.args.len) {
 				incremet += 1
 			}
 			if tt.want != incremet {
