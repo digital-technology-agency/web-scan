@@ -1,4 +1,4 @@
-package services
+package generators
 
 type SimpleGenerator struct {
 	Alphabet string
