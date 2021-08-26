@@ -23,7 +23,11 @@ func main() {
 	list := map[string]models.Page{}
 	increment := 0
 	wg := sync.WaitGroup{}
-	for domenName := range services.Gen(*alphabet, utils.Int(*urlLen)) {
+	gen := services.SimpleGenerator{
+		Alphabet: *alphabet,
+		Len:      utils.Int(*urlLen),
+	}
+	for domenName := range gen.Gen() {
 		increment += 1
 		wg.Add(1)
 		go func(domen string, wg *sync.WaitGroup) {

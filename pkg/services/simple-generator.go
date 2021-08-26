@@ -1,11 +1,16 @@
 package services
 
+type SimpleGenerator struct {
+	Alphabet string
+	Len      int
+}
+
 /*Gen generate url*/
-func Gen(alphabet string, len int) <-chan string {
+func (gen *SimpleGenerator) Gen() <-chan string {
 	c := make(chan string)
 	go func(c chan string) {
 		defer close(c)
-		addLetter(c, "", alphabet, len)
+		addLetter(c, "", gen.Alphabet, gen.Len)
 	}(c)
 	return c
 }
