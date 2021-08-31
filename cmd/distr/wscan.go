@@ -18,7 +18,7 @@ var (
 	alphabet         = flag.String(`alphabet`, "", `Example abcdefg`)
 	urlLen           = flag.String(`len`, "", `Example 2`)
 	concurrencyCount = flag.String(`concurrency`, "10", `Example 10`)
-	PROTOCOLS        = []string{"http", "https"}
+	protocols        = []string{"http", "https"}
 )
 
 func genWritersProtocols(names []string) map[string]*json.EachRowWriter {
@@ -45,11 +45,11 @@ func main() {
 		Alphabet: *alphabet,
 		Len:      utils.Int(*urlLen),
 	}
-	protocolWriters := genWritersProtocols(PROTOCOLS)
+	protocolWriters := genWritersProtocols(protocols)
 	for domenName := range gen.Gen() {
 		cuncurency.Wait()
 		total += 1
-		for _, protokol := range PROTOCOLS {
+		for _, protokol := range protocols {
 			go func(protokol, domen string, w *json.EachRowWriter) {
 				defer cuncurency.Done()
 				url := fmt.Sprintf("%s://%s.ru", protokol, domen)
