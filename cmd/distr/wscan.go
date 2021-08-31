@@ -14,11 +14,11 @@ import (
 )
 
 var (
-	CORЕ_COUNT        = flag.String(`core_count`, "1", `Example 1`)
-	ALPHABET          = flag.String(`alphabet`, "", `Example abcdefg`)
-	URL_LEN           = flag.String(`len`, "", `Example 2`)
-	CUNCURRENCY_COUNT = flag.String(`concurrency`, "10", `Example 10`)
-	PROTOCOLS         = []string{"http", "https"}
+	coreCount        = flag.String(`core_count`, "1", `Example 1`)
+	alphabet         = flag.String(`alphabet`, "", `Example abcdefg`)
+	urlLen           = flag.String(`len`, "", `Example 2`)
+	concurrencyCount = flag.String(`concurrency`, "10", `Example 10`)
+	PROTOCOLS        = []string{"http", "https"}
 )
 
 func genWritersProtocols(names []string) map[string]*json.EachRowWriter {
@@ -33,17 +33,17 @@ func genWritersProtocols(names []string) map[string]*json.EachRowWriter {
 func main() {
 	flag.Parse()
 	/*check flags*/
-	if *ALPHABET == "" && *URL_LEN == "" {
+	if *alphabet == "" && *urlLen == "" {
 		flag.PrintDefaults()
 		return
 	}
-	runtime.GOMAXPROCS(utils.Int(*CORЕ_COUNT))
-	cuncurency := goccm.New(utils.Int(*CUNCURRENCY_COUNT))
+	runtime.GOMAXPROCS(utils.Int(*coreCount))
+	cuncurency := goccm.New(utils.Int(*concurrencyCount))
 	total := 0
 	domenNames := 0
 	gen := generators.SimpleGenerator{
-		Alphabet: *ALPHABET,
-		Len:      utils.Int(*URL_LEN),
+		Alphabet: *alphabet,
+		Len:      utils.Int(*urlLen),
 	}
 	protocolWriters := genWritersProtocols(PROTOCOLS)
 	for domenName := range gen.Gen() {

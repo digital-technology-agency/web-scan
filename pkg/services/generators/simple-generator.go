@@ -1,5 +1,6 @@
 package generators
 
+/*SimpleGenerator simple generator type*/
 type SimpleGenerator struct {
 	Alphabet string
 	Len      int
