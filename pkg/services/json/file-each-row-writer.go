@@ -11,6 +11,16 @@ type EachRowWriter struct {
 	file *os.File
 }
 
+// NewEachRowWriters create new writers.
+func NewEachRowWriters(names []string) map[string]*EachRowWriter {
+	result := map[string]*EachRowWriter{}
+	for _, name := range names {
+		writer, _ := NewEachRowWriter(fmt.Sprintf("%s.txt", name))
+		result[name] = writer
+	}
+	return result
+}
+
 // NewEachRowWriter new writer.
 func NewEachRowWriter(path string) (*EachRowWriter, error) {
 	create, err := os.Create(path)
