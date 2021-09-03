@@ -2,7 +2,7 @@ name: Go
 
 on:
   release:
-    types: [created]
+    types: [ created ]
 
 
 jobs:
@@ -11,12 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        goos: [linux, windows, darwin, android]
-        goarch: ["386", amd64, arm]
+        goos: [ linux, windows, darwin, android ]
+        goarch: [ "386", amd64, "arm" ]
         exclude:
           - goarch: "386"
             goos: darwin
-          - goarch: ["386", amd64]
+          - goarch: "386"
+            goos: android
+          - goarch: "arm"
             goos: android
     steps:
       - uses: actions/checkout@v2
