@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        goos: [ linux, windows, darwin, android, freebsd, dragonfly, openbsd ]
+        goos: [ linux, windows, darwin, android, freebsd, dragonfly, openbsd, plan9, solaris ]
         goarch: [ "386", amd64, arm64 ]
         exclude:
           - goarch: "386"
@@ -28,6 +28,12 @@ jobs:
             goos: dragonfly
           - goarch: arm64
             goos: openbsd
+          - goarch: arm64
+            goos: plan9
+          - goarch: arm64
+            goos: solaris
+          - goarch: "386"
+            goos: solaris
     steps:
       - uses: actions/checkout@v2
       - uses: wangyoucao577/go-release-action@v1.18
