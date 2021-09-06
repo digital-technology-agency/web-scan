@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         goos: [ linux, windows, darwin, android, freebsd, dragonfly, openbsd, plan9, solaris, netbsd ]
-        goarch: [ "386", amd64, arm64, ppc64, ppc64le ]
+        goarch: [ "386", amd64, arm64, ppc64, ppc64le, mips, mipsle ]
         exclude:
           - goarch: "386"
             goos: darwin
@@ -20,23 +20,39 @@ jobs:
             goos: darwin
           - goarch: ppc64le
             goos: darwin
+          - goarch: mips
+            goos: darwin
+          - goarch: mipsle
+            goos: darwin
           - goarch: "386"
             goos: android
           - goarch: ppc64
             goos: android
           - goarch: ppc64le
             goos: android
+          - goarch: mips
+            goos: android
+          - goarch: mipsle
+            goos: android
           - goarch: arm64
             goos: windows
           - goarch: ppc64
             goos: windows
           - goarch: ppc64le
             goos: windows
+          - goarch: mips
+            goos: windows
+          - goarch: mipsle
+            goos: windows
           - goarch: arm64
             goos: freebsd
           - goarch: ppc64
             goos: freebsd
           - goarch: ppc64le
+            goos: freebsd
+          - goarch: mips
+            goos: freebsd
+          - goarch: mipsle
             goos: freebsd
           - goarch: ppc64
             goos: dragonfly
@@ -46,17 +62,29 @@ jobs:
             goos: dragonfly
           - goarch: "386"
             goos: dragonfly
+          - goarch: mips
+            goos: dragonfly
+          - goarch: mipsle
+            goos: dragonfly
           - goarch: arm64
             goos: openbsd
           - goarch: ppc64
             goos: openbsd
           - goarch: ppc64le
             goos: openbsd
+          - goarch: mips
+            goos: openbsd
+          - goarch: mipsle
+            goos: openbsd
           - goarch: arm64
             goos: plan9
           - goarch: ppc64
             goos: plan9
           - goarch: ppc64le
+            goos: plan9
+          - goarch: mips
+            goos: plan9
+          - goarch: mipsle
             goos: plan9
           - goarch: arm64
             goos: solaris
@@ -65,12 +93,20 @@ jobs:
           - goarch: "386"
             goos: solaris
           - goarch: ppc64le
+            goos: solaris
+          - goarch: mips
+            goos: solaris
+          - goarch: mipsle
             goos: solaris
           - goarch: arm64
             goos: netbsd
           - goarch: ppc64
             goos: netbsd
           - goarch: ppc64le
+            goos: netbsd
+          - goarch: mips
+            goos: netbsd
+          - goarch: mipsle
             goos: netbsd
     steps:
       - uses: actions/checkout@v2
