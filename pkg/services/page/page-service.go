@@ -42,21 +42,40 @@ func (s PageService) ReadPage() (*models.Page, error) {
 			item.Description = s.AttrOr("content", "")
 		}
 	})
+	robotsTxtData, err := getRobotsTxt(url)
+	if err != nil {
+		fmt.Printf("Robots txt err:[%s]\n", err.Error())
+		return nil, err
+	}
+	item.Robots = string(robotsTxtData)
+	siteMapXml, err := getSitemapXml(url)
+	if err != nil {
+		fmt.Printf("Sitemap xml err:[%s]\n", err.Error())
+		return nil, err
+	}
+	item.Sitemap = string(siteMapXml)
+	return &item, nil
+}
+
+func getSitemapXml(url string) ([]byte, error) {
+	urlSitemapXml := fmt.Sprintf("%s/sitemap.xml", url)
+	return getResponse(urlSitemapXml)
+}
+
+func getRobotsTxt(url string) ([]byte, error) {
 	urlRobotTxt := fmt.Sprintf("%s/robots.txt", url)
-	resRobots, err := http.Get(urlRobotTxt)
+	return getResponse(urlRobotTxt)
+}
+
+func getResponse(url string) ([]byte, error) {
+	resRobots, err := http.Get(url)
 	if err != nil {
 		fmt.Printf("Err:[%s]\n", err.Error())
 		return nil, err
 	}
 	if resRobots.StatusCode != 200 {
-		fmt.Printf("Robots txt. Status:[%d]\n", resRobots.StatusCode)
+		fmt.Printf("Get response data. Status:[%d]\n", resRobots.StatusCode)
 		return nil, err
 	}
-	allBytesRobotsTxt, err := ioutil.ReadAll(resRobots.Body)
-	if err != nil {
-		fmt.Printf("Err:[%s]\n", err.Error())
-		return nil, err
-	}
-	item.Robots = string(allBytesRobotsTxt)
-	return &item, nil
+	return ioutil.ReadAll(resRobots.Body)
 }

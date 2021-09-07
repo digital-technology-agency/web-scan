@@ -6,4 +6,5 @@ type Page struct {
 	Description string `json:"description"`
 	Url         string `json:"url"`
 	Robots      string `json:"robots"`
+	Sitemap     string `json:"sitemap"`
 }
