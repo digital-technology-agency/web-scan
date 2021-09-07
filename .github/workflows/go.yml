@@ -46,8 +46,116 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        goos: [ android  ]
+        goos: [ android ]
+        goarch: [ amd64, arm64 ]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: wangyoucao577/go-release-action@v1.18
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: ${{ matrix.goos }}
+          goarch: ${{ matrix.goarch }}
+          project_path: "./cmd/distr"
+          binary_name: "wscan"
+          overwrite: true
+
+  releases-mac:
+    name: Mac
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [ darwin ]
+        goarch: [ amd64, arm64 ]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: wangyoucao577/go-release-action@v1.18
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: ${{ matrix.goos }}
+          goarch: ${{ matrix.goarch }}
+          project_path: "./cmd/distr"
+          binary_name: "wscan"
+          overwrite: true
+
+  releases-freebsd:
+    name: Freebsd
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [ freebsd ]
         goarch: [ "386", amd64, arm64 ]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: wangyoucao577/go-release-action@v1.18
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: ${{ matrix.goos }}
+          goarch: ${{ matrix.goarch }}
+          project_path: "./cmd/distr"
+          binary_name: "wscan"
+          overwrite: true
+
+  releases-netbsd:
+    name: Netbsd
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [ netbsd ]
+        goarch: [ "386", amd64, arm64 ]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: wangyoucao577/go-release-action@v1.18
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: ${{ matrix.goos }}
+          goarch: ${{ matrix.goarch }}
+          project_path: "./cmd/distr"
+          binary_name: "wscan"
+          overwrite: true
+
+  releases-openbsd:
+    name: Openbsd
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [ openbsd ]
+        goarch: [ "386", amd64, arm64 ]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: wangyoucao577/go-release-action@v1.18
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: ${{ matrix.goos }}
+          goarch: ${{ matrix.goarch }}
+          project_path: "./cmd/distr"
+          binary_name: "wscan"
+          overwrite: true
+
+  releases-plan9:
+    name: Plan9
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [ plan9 ]
+        goarch: [ "386", amd64 ]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: wangyoucao577/go-release-action@v1.18
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: ${{ matrix.goos }}
+          goarch: ${{ matrix.goarch }}
+          project_path: "./cmd/distr"
+          binary_name: "wscan"
+          overwrite: true
+
+  releases-solaris:
+    name: Solaris
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [ solaris ]
+        goarch: [ amd64 ]
     steps:
       - uses: actions/checkout@v2
       - uses: wangyoucao577/go-release-action@v1.18
