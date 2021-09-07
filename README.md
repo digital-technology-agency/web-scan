@@ -27,5 +27,5 @@ go get github.com/digital-technology-agency/web-scan/pkg/utils
 ## Run on Linux
 
 ```bash
-$ ./wscan -alphabet "abcdef" -len 2
+$ ./wscan -alphabet "abcdef" -len 2 -core_count 1 -concurrency 5
 ```
