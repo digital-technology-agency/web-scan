@@ -1,6 +1,7 @@
 package models
 
 import (
+	"context"
 	"fmt"
 	"github.com/digital-technology-agency/web-scan/pkg/database"
 )
@@ -46,6 +47,21 @@ func (p Page) SelectAll(dbService database.DbService) ([]Page, error) {
 	result := []Page{}
 	err = connect.Select(&result, query)
 	return result, err
+}
+
+func (p Page) AddOrUpdate(dbService database.DbService) error {
+	connect, err := dbService.Connect()
+	if err != nil {
+		return err
+	}
+	defer connect.Close()
+	destValue := &Page{}
+	err = connect.GetContext(context.Background(), destValue, fmt.Sprintf("SELECT * from %s WHERE url=$1 LIMIT 1", PAGE_TABLE_NAME), p.Url)
+	if err != nil {
+		return p.Insert(dbService)
+	} else {
+		return p.Update(dbService)
+	}
 }
 
 func (p Page) Insert(dbService database.DbService) error {

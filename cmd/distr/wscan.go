@@ -3,11 +3,14 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/digital-technology-agency/web-scan/pkg/database"
+	"github.com/digital-technology-agency/web-scan/pkg/database/sqlite"
+	"github.com/digital-technology-agency/web-scan/pkg/models"
 	"github.com/digital-technology-agency/web-scan/pkg/services/generators"
-	"github.com/digital-technology-agency/web-scan/pkg/services/json"
 	"github.com/digital-technology-agency/web-scan/pkg/services/page"
 	"github.com/digital-technology-agency/web-scan/pkg/utils"
 	"github.com/zenthangplus/goccm"
+	"os"
 	"runtime"
 )
 
@@ -17,6 +20,7 @@ var (
 	urlLen           = flag.String(`len`, "", `Example 2`)
 	concurrencyCount = flag.String(`concurrency`, "5", `Example 5`)
 	protocols        = []string{"http", "https"}
+	sqliteService    = sqlite.SqLite{}
 )
 
 func main() {
@@ -34,12 +38,18 @@ func main() {
 		Alphabet: *alphabet,
 		Len:      utils.Int(*urlLen),
 	}
-	protocolWriters := json.NewEachRowWriters(protocols)
+	/*protocolWriters := json.NewEachRowWriters(protocols)*/
+	model := models.Page{}
+	err := model.CreateTable(sqliteService)
+	if err != nil {
+		fmt.Printf("Db service, create table! err:[%s]\n", err.Error())
+		os.Exit(-1)
+	}
 	for domenName := range gen.Gen() {
 		cuncurency.Wait()
 		total += 1
 		for _, protokol := range protocols {
-			go func(protokol, domen string, w *json.EachRowWriter) {
+			go func(protokol, domen string, dbService database.DbService) {
 				defer cuncurency.Done()
 				url := fmt.Sprintf("%s://%s.ru", protokol, domen)
 				pageService := page.PageService{
@@ -53,13 +63,14 @@ func main() {
 					fmt.Printf("Page is nil\n")
 					return
 				}
-				err = w.WriteLine(item)
+				err = item.AddOrUpdate(dbService)
 				if err != nil {
-					fmt.Printf("Write line err:[%s]\n", err.Error())
+					fmt.Printf("Write line to service! Err:[%s]\n", err.Error())
 					return
 				}
+				/*				err = w.WriteLine(item)*/
 				domenNames += 1
-			}(protokol, domenName, protocolWriters[protokol])
+			}(protokol, domenName, sqliteService)
 		}
 	}
 	cuncurency.WaitAllDone()

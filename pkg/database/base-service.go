@@ -11,6 +11,7 @@ type DbEntity interface {
 	GetTableName() string
 	CreateTable(service DbService) error
 	DropTable(service DbService) error
+	AddOrUpdate(service DbService) error
 	Insert(service DbService) error
 	Update(service DbService) error
 	Delete(service DbService) error

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="wScan" uuid="8d868f5e-639e-4703-946c-1ddc98efb0ae">
+    <data-source source="LOCAL" name="wScan" uuid="842501fb-8ead-4889-bde1-ad7bd691067e">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/pkg/models/wScan.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/wScan.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
       <libraries>
         <library>
