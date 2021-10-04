@@ -82,13 +82,10 @@ func main() {
 				switch *dataStore {
 				default:
 					fmt.Printf("Store [%s] - not found!\n", *dataStore)
-					break
 				case env.JSON_EACH_ROW_STORE:
 					err = protocolWriters[protokol].WriteLine(item)
-					break
 				case env.SQLITE_STORE:
 					err = item.AddOrUpdate(dbStore[env.SQLITE_STORE])
-					break
 				}
 				if err != nil {
 					fmt.Printf("Write line to service! Err:[%s]\n", err.Error())
