@@ -3,69 +3,66 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/digital-technology-agency/web-scan/pkg/env"
+	"github.com/digital-technology-agency/web-scan/pkg/config"
+	"github.com/digital-technology-agency/web-scan/pkg/database"
 	"github.com/digital-technology-agency/web-scan/pkg/models"
-	"github.com/digital-technology-agency/web-scan/pkg/services/generators"
-	"github.com/digital-technology-agency/web-scan/pkg/services/json"
 	"github.com/digital-technology-agency/web-scan/pkg/services/page"
-	"github.com/digital-technology-agency/web-scan/pkg/utils"
 	"github.com/zenthangplus/goccm"
 	"os"
 	"runtime"
 )
 
 var (
-	processCount     = flag.String(`process_count`, "1", `Example 1`)
-	alphabet         = flag.String(`alphabet`, "", `Example abcdefg`)
-	urlLen           = flag.String(`len`, "", `Example 2`)
-	concurrencyCount = flag.String(`concurrency`, "5", `Example 5`)
-	dataStore        = flag.String(`data_store`, env.SQLITE_STORE, "Example:\n"+
-		fmt.Sprintf("%s\n", env.SQLITE_STORE)+
-		fmt.Sprintf("%s\n", env.JSON_EACH_ROW_STORE)+
-		"",
-	)
-	protocols = []string{env.HTTP_PROTOCOL, env.HTTPS_PROTOCOL}
-	/*services*/
-	protocolWriters = map[string]*json.EachRowWriter{}
-	dbStore         = env.InitDbStore()
+	configurationFile = flag.String(`configuration_file`, "", `Example: config.json`)
+	configuration     = config.Default()
 )
 
 func main() {
+	if len(os.Args) > 1 {
+		if os.Args[1] == "init" {
+			err := configuration.Save("config.json")
+			if err != nil {
+				fmt.Printf("Configuration file not save! err:[%s]\n", err.Error())
+				os.Exit(-1)
+			}
+			os.Exit(0)
+		}
+	}
 	flag.Parse()
-	/*check flags*/
-	if *alphabet == "" && *urlLen == "" {
-		flag.PrintDefaults()
-		return
-	}
-	if !env.CheckStore(*dataStore) {
-		fmt.Printf("Store [%s] - not found!\n", *dataStore)
-		flag.PrintDefaults()
-		return
-	}
-	runtime.GOMAXPROCS(utils.Int(*processCount))
-	cuncurency := goccm.New(utils.Int(*concurrencyCount))
-	total := 0
-	domenNames := 0
-	gen := generators.SimpleGenerator{
-		Alphabet: *alphabet,
-		Len:      utils.Int(*urlLen),
-	}
-	model := models.Page{}
-	/*check db service*/
-	if env.CheckDataBaseStore(*dataStore) {
-		err := model.CreateTable(dbStore[*dataStore])
+	if *configurationFile != "" {
+		loadConfig, err := config.Load(*configurationFile)
 		if err != nil {
-			fmt.Printf("Db service, create table! err:[%s]\n", err.Error())
+			fmt.Printf("Configuration file not correct! err:[%s]\n", err.Error())
 			os.Exit(-1)
 		}
-	} else {
-		protocolWriters = json.NewEachRowWriters(protocols)
+		/*validate config*/
+		err = loadConfig.Validate()
+		if err != nil {
+			fmt.Printf("Configuration file not correct! err:[%s]\n", err.Error())
+			os.Exit(-1)
+		}
+		configuration = *loadConfig
+	}
+	configuration.InitGenerator()
+	configuration.InitDataStore()
+	runtime.GOMAXPROCS(configuration.ProcessCount)
+	cuncurency := goccm.New(configuration.ConcurrencyCount)
+	total := 0
+	domenNames := 0
+	gen := configuration.Generator
+	protocols := configuration.ProtocolTypes
+	model := models.Page{}
+	/*check db service*/
+	err := model.CreateTable(configuration.DataStore)
+	if err != nil {
+		fmt.Printf("Db service, create table! err:[%s]\n", err.Error())
+		os.Exit(-1)
 	}
 	for domenName := range gen.Gen() {
 		cuncurency.Wait()
 		total += 1
 		for _, protokol := range protocols {
-			go func(protokol, domen string) {
+			go func(protokol, domen string, dataStore database.DbService) {
 				defer cuncurency.Done()
 				url := fmt.Sprintf("%s://%s.ru", protokol, domen)
 				pageService := page.PageService{
@@ -79,20 +76,13 @@ func main() {
 					fmt.Printf("Page is nil\n")
 					return
 				}
-				switch *dataStore {
-				default:
-					fmt.Printf("Store [%s] - not found!\n", *dataStore)
-				case env.JSON_EACH_ROW_STORE:
-					err = protocolWriters[protokol].WriteLine(item)
-				case env.SQLITE_STORE:
-					err = item.AddOrUpdate(dbStore[env.SQLITE_STORE])
-				}
+				err = item.AddOrUpdate(dataStore)
 				if err != nil {
 					fmt.Printf("Write line to service! Err:[%s]\n", err.Error())
 					return
 				}
 				domenNames += 1
-			}(protokol, domenName)
+			}(protokol, domenName, configuration.DataStore)
 		}
 	}
 	cuncurency.WaitAllDone()

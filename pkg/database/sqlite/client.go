@@ -5,6 +5,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+// SqLite sqlite client
 type SqLite struct {
 	db *sqlx.DB
 }

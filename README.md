@@ -24,8 +24,7 @@ program displays all the titles and descriptions of the available sites.
 ### [golang/cmd/go](https://golang.org/cmd/go/)
 
 ```bash
-go get github.com/digital-technology-agency/web-scan/pkg/models
-go get github.com/digital-technology-agency/web-scan/pkg/utils
+go get github.com/digital-technology-agency/web-scan
 ```
 
 ## Data store
@@ -33,8 +32,38 @@ go get github.com/digital-technology-agency/web-scan/pkg/utils
 * sqlite - SQLite
 * jsoneachrow - Json Each row
 
-## Run on Linux
+## Generator type
+
+- simple - Simple generator type
+
+## Init configuration file
 
 ```bash
-$ ./wscan -alphabet "abcdef" -len 2 -data_store "sqlite" -process_count 1 -concurrency 5
+$ ./wscan init
+
+```
+
+---
+
+#### Configuration file `config.json`
+
+```json
+{
+  "process_count": 1,
+  "alphabet": "abcdefgefghijklmnop",
+  "url_len": 5,
+  "concurrency_count": 5,
+  "data_store_type": "sqlite",
+  "generator_type": "simple",
+  "protocol_types": [
+    "http",
+    "https"
+  ]
+}
+```
+
+## Run
+
+```bash
+$ ./wscan -configuration_file config.json
 ```

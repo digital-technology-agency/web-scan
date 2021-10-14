@@ -17,10 +17,12 @@ type Page struct {
 	Sitemap     string `json:"sitemap" db:"sitemap"`
 }
 
+// GetTableName get table name
 func (p Page) GetTableName() string {
 	return PAGE_TABLE_NAME
 }
 
+// CreateTable create table
 func (p Page) CreateTable(dbService database.DbService) error {
 	query := fmt.Sprintf("CREATE TABLE IF NOT EXISTS %s ("+
 		"url TEXT PRIMARY KEY NOT NULL,"+
@@ -32,11 +34,13 @@ func (p Page) CreateTable(dbService database.DbService) error {
 	return dbService.Execute(query)
 }
 
+// DropTable drop table
 func (p Page) DropTable(dbService database.DbService) error {
 	query := fmt.Sprintf("DROP TABLE IF EXISTS %s", PAGE_TABLE_NAME)
 	return dbService.Execute(query)
 }
 
+// SelectAll select all rows
 func (p Page) SelectAll(dbService database.DbService) ([]Page, error) {
 	query := fmt.Sprintf("SELECT * FROM %s", PAGE_TABLE_NAME)
 	connect, err := dbService.Connect()
@@ -49,6 +53,7 @@ func (p Page) SelectAll(dbService database.DbService) ([]Page, error) {
 	return result, err
 }
 
+// AddOrUpdate add or update row
 func (p Page) AddOrUpdate(dbService database.DbService) error {
 	connect, err := dbService.Connect()
 	if err != nil {
@@ -64,6 +69,7 @@ func (p Page) AddOrUpdate(dbService database.DbService) error {
 	}
 }
 
+// Insert insert data to table
 func (p Page) Insert(dbService database.DbService) error {
 	connect, err := dbService.Connect()
 	if err != nil {
@@ -75,6 +81,7 @@ func (p Page) Insert(dbService database.DbService) error {
 	return err
 }
 
+// Update update data in table
 func (p Page) Update(dbService database.DbService) error {
 	connect, err := dbService.Connect()
 	if err != nil {
@@ -86,6 +93,7 @@ func (p Page) Update(dbService database.DbService) error {
 	return err
 }
 
+// Delete delete data from table
 func (p Page) Delete(dbService database.DbService) error {
 	connect, err := dbService.Connect()
 	if err != nil {

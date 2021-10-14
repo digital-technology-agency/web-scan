@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="wScan" uuid="4787169b-9a49-460d-98de-539f1f2b39f3">
+    <data-source source="LOCAL" name="wScan" uuid="8129e3d7-d8b6-4b8a-bd9b-f157434e7594">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>

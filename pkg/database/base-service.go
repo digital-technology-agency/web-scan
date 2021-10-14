@@ -2,11 +2,13 @@ package database
 
 import "github.com/jmoiron/sqlx"
 
+// DbService database interface
 type DbService interface {
 	Connect() (*sqlx.DB, error)
 	Execute(query string) error
 }
 
+// DbEntity entity interface
 type DbEntity interface {
 	GetTableName() string
 	CreateTable(service DbService) error

@@ -1,0 +1,12 @@
+{
+  "process_count": 1,
+  "alphabet": "abcdefgefghijklmnop",
+  "url_len": 5,
+  "concurrency_count": 5,
+  "data_store_type": "sqlite",
+  "generator_type": "simple",
+  "protocol_types": [
+    "http",
+    "https"
+  ]
+}
