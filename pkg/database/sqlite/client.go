@@ -2,7 +2,7 @@ package sqlite
 
 import (
 	"github.com/jmoiron/sqlx"
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/mattn/go-sqlite3" // sqlite3
 )
 
 // SqLite sqlite client
@@ -20,7 +20,7 @@ func (engine SqLite) Connect() (*sqlx.DB, error) {
 	return engine.db, nil
 }
 
-// ExecuteQuery create table in database.
+// Execute create table in database.
 func (engine SqLite) Execute(query string) error {
 	db, err := engine.Connect()
 	if err != nil {

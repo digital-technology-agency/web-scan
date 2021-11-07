@@ -2,10 +2,11 @@ package config
 
 import (
 	"fmt"
-	"github.com/digital-technology-agency/web-scan/pkg/database"
 	"os"
 	"reflect"
 	"testing"
+
+	"github.com/digital-technology-agency/web-scan/pkg/database"
 )
 
 var (
@@ -17,7 +18,7 @@ func TestConfiguration_Save(t *testing.T) {
 	type fields struct {
 		ProcessCount     int
 		Alphabet         string
-		UrlLen           int
+		URLLen           int
 		ConcurrencyCount int
 		DataStoreType    string
 		DataStore        database.DbService
@@ -37,7 +38,7 @@ func TestConfiguration_Save(t *testing.T) {
 			fields: fields{
 				ProcessCount:     testConfiguration.ProcessCount,
 				Alphabet:         testConfiguration.Alphabet,
-				UrlLen:           testConfiguration.UrlLen,
+				URLLen:           testConfiguration.URLLen,
 				ConcurrencyCount: testConfiguration.ConcurrencyCount,
 				DataStoreType:    testConfiguration.DataStoreType,
 				DataStore:        testConfiguration.DataStore,
@@ -54,7 +55,7 @@ func TestConfiguration_Save(t *testing.T) {
 			cfg := Configuration{
 				ProcessCount:     tt.fields.ProcessCount,
 				Alphabet:         tt.fields.Alphabet,
-				UrlLen:           tt.fields.UrlLen,
+				URLLen:           tt.fields.URLLen,
 				ConcurrencyCount: tt.fields.ConcurrencyCount,
 				DataStoreType:    tt.fields.DataStoreType,
 				DataStore:        tt.fields.DataStore,
@@ -85,7 +86,7 @@ func TestLoad(t *testing.T) {
 			want: &Configuration{
 				ProcessCount:     testConfiguration.ProcessCount,
 				Alphabet:         testConfiguration.Alphabet,
-				UrlLen:           testConfiguration.UrlLen,
+				URLLen:           testConfiguration.URLLen,
 				ConcurrencyCount: testConfiguration.ConcurrencyCount,
 				DataStoreType:    testConfiguration.DataStoreType,
 				DataStore:        nil,
@@ -112,7 +113,7 @@ func TestConfiguration_InitDataStore(t *testing.T) {
 	type fields struct {
 		ProcessCount     int
 		Alphabet         string
-		UrlLen           int
+		URLLen           int
 		ConcurrencyCount int
 		DataStoreType    string
 		DataStore        database.DbService
@@ -127,7 +128,7 @@ func TestConfiguration_InitDataStore(t *testing.T) {
 			fields: fields{
 				ProcessCount:     testConfiguration.ProcessCount,
 				Alphabet:         testConfiguration.Alphabet,
-				UrlLen:           testConfiguration.UrlLen,
+				URLLen:           testConfiguration.URLLen,
 				ConcurrencyCount: testConfiguration.ConcurrencyCount,
 				DataStoreType:    testConfiguration.DataStoreType,
 				DataStore:        nil,
@@ -140,7 +141,7 @@ func TestConfiguration_InitDataStore(t *testing.T) {
 			cfg := Configuration{
 				ProcessCount:     tt.fields.ProcessCount,
 				Alphabet:         tt.fields.Alphabet,
-				UrlLen:           tt.fields.UrlLen,
+				URLLen:           tt.fields.URLLen,
 				ConcurrencyCount: tt.fields.ConcurrencyCount,
 				DataStoreType:    tt.fields.DataStoreType,
 				DataStore:        tt.fields.DataStore,

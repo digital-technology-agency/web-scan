@@ -1,8 +1,10 @@
 package env
 
 const (
-	SQLITE_STORE        = `sqlite`
-	JSON_EACH_ROW_STORE = `jsoneachrow`
+	// SQLiteStore ...
+	SQLiteStore = `sqlite`
+	// JSONEachRowStore ...
+	JSONEachRowStore = `jsoneachrow`
 )
 
 // CheckStore validate store type
@@ -11,8 +13,8 @@ func CheckStore(input string) bool {
 	default:
 		return false
 	case
-		SQLITE_STORE,
-		JSON_EACH_ROW_STORE:
+		SQLiteStore,
+		JSONEachRowStore:
 		return true
 	}
 }

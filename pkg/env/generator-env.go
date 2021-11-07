@@ -1,7 +1,8 @@
 package env
 
 var (
-	SIMPLE_GENERATOR = `simple`
+	// SimpleGeneratorVar ...
+	SimpleGeneratorVar = `simple`
 )
 
 // CheckGenerator validate generator type
@@ -10,7 +11,7 @@ func CheckGenerator(input string) bool {
 	default:
 		return false
 	case
-		SIMPLE_GENERATOR:
+		SimpleGeneratorVar:
 		return true
 	}
 }
