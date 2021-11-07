@@ -3,13 +3,14 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
+	"runtime"
+
 	"github.com/digital-technology-agency/web-scan/pkg/config"
 	"github.com/digital-technology-agency/web-scan/pkg/database"
 	"github.com/digital-technology-agency/web-scan/pkg/models"
 	"github.com/digital-technology-agency/web-scan/pkg/services/page"
 	"github.com/zenthangplus/goccm"
-	"os"
-	"runtime"
 )
 
 var (
@@ -60,13 +61,13 @@ func main() {
 	}
 	for domenName := range gen.Gen() {
 		cuncurency.Wait()
-		total += 1
+		total++
 		for _, protokol := range protocols {
 			go func(protokol, domen string, dataStore database.DbService) {
 				defer cuncurency.Done()
 				url := fmt.Sprintf("%s://%s.ru", protokol, domen)
-				pageService := page.PageService{
-					Url: url,
+				pageService := page.Page{
+					URL: url,
 				}
 				item, err := pageService.ReadPage()
 				if err != nil {
@@ -81,7 +82,7 @@ func main() {
 					fmt.Printf("Write line to service! Err:[%s]\n", err.Error())
 					return
 				}
-				domenNames += 1
+				domenNames++
 			}(protokol, domenName, configuration.DataStore)
 		}
 	}

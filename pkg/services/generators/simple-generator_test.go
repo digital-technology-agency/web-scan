@@ -77,12 +77,12 @@ func TestGen(t *testing.T) {
 				Alphabet: tt.fields.Alphabet,
 				Len:      tt.fields.Len,
 			}
-			incremet := 0
+			increment := 0
 			for range gen.Gen() {
-				incremet += 1
+				increment++
 			}
-			if tt.want != incremet {
-				t.Errorf("Gen() = %v, want %v", incremet, tt.want)
+			if tt.want != increment {
+				t.Errorf("Gen() = %v, want %v", increment, tt.want)
 			}
 		})
 	}

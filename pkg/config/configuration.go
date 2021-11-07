@@ -3,19 +3,20 @@ package config
 import (
 	"encoding/json"
 	"errors"
+	"io/ioutil"
+	"strings"
+
 	"github.com/digital-technology-agency/web-scan/pkg/database"
 	"github.com/digital-technology-agency/web-scan/pkg/database/sqlite"
 	"github.com/digital-technology-agency/web-scan/pkg/env"
 	generators "github.com/digital-technology-agency/web-scan/pkg/services/generators"
-	"io/ioutil"
-	"strings"
 )
 
 // Configuration configuration type
 type Configuration struct {
 	ProcessCount     int                  `json:"process_count"`
 	Alphabet         string               `json:"alphabet"`
-	UrlLen           int                  `json:"url_len"`
+	URLLen           int                  `json:"url_len"`
 	ConcurrencyCount int                  `json:"concurrency_count"`
 	DataStoreType    string               `json:"data_store_type"`
 	DataStore        database.DbService   `json:"-"`
@@ -29,16 +30,16 @@ func Default() Configuration {
 	return Configuration{
 		ProcessCount:     1,
 		Alphabet:         "abcdefg",
-		UrlLen:           2,
+		URLLen:           2,
 		ConcurrencyCount: 5,
-		DataStoreType:    env.SQLITE_STORE,
+		DataStoreType:    env.SQLiteStore,
 		DataStore:        sqlite.SqLite{},
-		GeneratorType:    env.SIMPLE_GENERATOR,
+		GeneratorType:    env.SimpleGeneratorVar,
 		Generator: &generators.SimpleGenerator{
 			Alphabet: "abcdefg",
 			Len:      2,
 		},
-		ProtocolTypes: []string{env.HTTP_PROTOCOL, env.HTTPS_PROTOCOL},
+		ProtocolTypes: []string{env.HTTPProtocol, env.HTTPSProtocol},
 	}
 }
 
@@ -59,32 +60,32 @@ func Load(path string) (*Configuration, error) {
 // Validate validate property params
 func (cfg Configuration) Validate() error {
 	if cfg.ProcessCount <= 0 {
-		return errors.New("Поле [process_count] - должно быть больше 0!")
+		return errors.New("Поле [process_count] - должно быть больше 0")
 	}
 	if strings.TrimSpace(strings.ToLower(cfg.Alphabet)) == "" {
-		return errors.New("Поле [alphabet] - должно содержать набор символов!")
+		return errors.New("Поле [alphabet] - должно содержать набор символов")
 	}
-	if cfg.UrlLen <= 0 {
-		return errors.New("Поле [url_len] - должно быть больше 0!")
+	if cfg.URLLen <= 0 {
+		return errors.New("Поле [url_len] - должно быть больше 0")
 	}
 	if cfg.ConcurrencyCount <= 0 {
-		return errors.New("Поле [concurrency_count] - должно быть больше 0!")
+		return errors.New("Поле [concurrency_count] - должно быть больше 0")
 	}
 	if !env.CheckStore(cfg.DataStoreType) {
-		return errors.New("Поле [data_store_type] - должно содержать значение из предложенных вариантов!")
+		return errors.New("Поле [data_store_type] - должно содержать значение из предложенных вариантов")
 	}
 	if !env.CheckGenerator(cfg.GeneratorType) {
-		return errors.New("Поле [generator_type] - должно содержать значение из предложенных вариантов!")
+		return errors.New("Поле [generator_type] - должно содержать значение из предложенных вариантов")
 	}
 	if len(cfg.ProtocolTypes) == 0 {
-		return errors.New("Поле [protocol_types] - должно содержать одно или несколько занчение из предложенных вариантов!")
+		return errors.New("Поле [protocol_types] - должно содержать одно или несколько занчение из предложенных вариантов")
 	}
 	for _, protocolType := range cfg.ProtocolTypes {
 		switch protocolType {
 		default:
-			return errors.New("Поле [protocol_types] - должно содержать одно или несколько занчение из предложенных вариантов!")
-		case env.HTTP_PROTOCOL:
-		case env.HTTPS_PROTOCOL:
+			return errors.New("Поле [protocol_types] - должно содержать одно или несколько занчение из предложенных вариантов")
+		case env.HTTPProtocol:
+		case env.HTTPSProtocol:
 			continue
 		}
 	}
@@ -107,12 +108,12 @@ func (cfg *Configuration) InitGenerator() {
 	default:
 		cfg.Generator = &generators.SimpleGenerator{
 			Alphabet: cfg.Alphabet,
-			Len:      cfg.UrlLen,
+			Len:      cfg.URLLen,
 		}
-	case env.SIMPLE_GENERATOR:
+	case env.SimpleGeneratorVar:
 		cfg.Generator = &generators.SimpleGenerator{
 			Alphabet: cfg.Alphabet,
-			Len:      cfg.UrlLen,
+			Len:      cfg.URLLen,
 		}
 	}
 }
@@ -122,7 +123,7 @@ func (cfg *Configuration) InitDataStore() {
 	switch cfg.DataStoreType {
 	default:
 		cfg.DataStore = sqlite.SqLite{}
-	case env.SQLITE_STORE:
+	case env.SQLiteStore:
 		cfg.DataStore = sqlite.SqLite{}
 	}
 }

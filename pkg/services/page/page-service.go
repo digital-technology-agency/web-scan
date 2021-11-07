@@ -2,22 +2,23 @@ package page
 
 import (
 	"fmt"
-	"github.com/PuerkitoBio/goquery"
-	"github.com/digital-technology-agency/web-scan/pkg/models"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/PuerkitoBio/goquery"
+	"github.com/digital-technology-agency/web-scan/pkg/models"
 )
 
-// PageService page service.
-type PageService struct {
-	Url string
+// Page page service.
+type Page struct {
+	URL string
 }
 
 // ReadPage read page.
-func (s PageService) ReadPage() (*models.Page, error) {
-	url := s.Url
+func (s Page) ReadPage() (*models.Page, error) {
+	url := s.URL
 	item := models.Page{
-		Url: url,
+		URL: url,
 	}
 	res, err := http.Get(url)
 	if err != nil {
@@ -48,18 +49,18 @@ func (s PageService) ReadPage() (*models.Page, error) {
 		return nil, err
 	}
 	item.Robots = string(robotsTxtData)
-	siteMapXml, err := getSitemapXml(url)
+	siteMapXML, err := getSitemapXML(url)
 	if err != nil {
 		fmt.Printf("Sitemap xml err:[%s]\n", err.Error())
 		return nil, err
 	}
-	item.Sitemap = string(siteMapXml)
+	item.Sitemap = string(siteMapXML)
 	return &item, nil
 }
 
-func getSitemapXml(url string) ([]byte, error) {
-	urlSitemapXml := fmt.Sprintf("%s/sitemap.xml", url)
-	return getResponse(urlSitemapXml)
+func getSitemapXML(url string) ([]byte, error) {
+	urlSitemapXML := fmt.Sprintf("%s/sitemap.xml", url)
+	return getResponse(urlSitemapXML)
 }
 
 func getRobotsTxt(url string) ([]byte, error) {
