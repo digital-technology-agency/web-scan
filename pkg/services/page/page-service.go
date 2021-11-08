@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/PuerkitoBio/goquery"
+
 	"github.com/digital-technology-agency/web-scan/pkg/models"
 )
 

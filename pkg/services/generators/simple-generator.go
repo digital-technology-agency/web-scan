@@ -1,12 +1,12 @@
 package generators
 
-/*SimpleGenerator simple generator type*/
+// SimpleGenerator simple generator type.
 type SimpleGenerator struct {
 	Alphabet string
 	Len      int
 }
 
-/*Gen generate url*/
+// Gen generate url.
 func (gen *SimpleGenerator) Gen() <-chan string {
 	c := make(chan string)
 	go func(c chan string) {

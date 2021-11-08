@@ -5,9 +5,10 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/google/uuid"
+
 	"github.com/digital-technology-agency/web-scan/pkg/database"
 	"github.com/digital-technology-agency/web-scan/pkg/database/sqlite"
-	"github.com/google/uuid"
 )
 
 var (

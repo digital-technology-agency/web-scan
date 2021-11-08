@@ -1,17 +1,14 @@
 package env
 
-var (
-	// SimpleGeneratorVar ...
-	SimpleGeneratorVar = `simple`
-)
+// SimpleGeneratorVar ...
+var SimpleGeneratorVar = `simple` //nolint:gochecknoglobals
 
-// CheckGenerator validate generator type
+// CheckGenerator validate generator type.
 func CheckGenerator(input string) bool {
 	switch input {
 	default:
 		return false
-	case
-		SimpleGeneratorVar:
+	case SimpleGeneratorVar:
 		return true
 	}
 }

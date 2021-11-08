@@ -7,7 +7,7 @@ const (
 	JSONEachRowStore = `jsoneachrow`
 )
 
-// CheckStore validate store type
+// CheckStore validate store type.
 func CheckStore(input string) bool {
 	switch input {
 	default:
