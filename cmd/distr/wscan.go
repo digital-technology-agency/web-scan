@@ -6,11 +6,12 @@ import (
 	"os"
 	"runtime"
 
+	"github.com/zenthangplus/goccm"
+
 	"github.com/digital-technology-agency/web-scan/pkg/config"
 	"github.com/digital-technology-agency/web-scan/pkg/database"
 	"github.com/digital-technology-agency/web-scan/pkg/models"
 	"github.com/digital-technology-agency/web-scan/pkg/services/page"
-	"github.com/zenthangplus/goccm"
 )
 
 var (
@@ -53,7 +54,7 @@ func main() {
 	gen := configuration.Generator
 	protocols := configuration.ProtocolTypes
 	model := models.Page{}
-	/*check db service*/
+	// check db service.
 	err := model.CreateTable(configuration.DataStore)
 	if err != nil {
 		fmt.Printf("Db service, create table! err:[%s]\n", err.Error())

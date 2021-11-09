@@ -10,7 +10,7 @@ import (
 // PageTableName ...
 const PageTableName = "pages"
 
-/*Page type of page*/
+// Page type of page.
 type Page struct {
 	Title       string `json:"title" db:"title"`
 	Description string `json:"description" db:"description"`
@@ -19,12 +19,12 @@ type Page struct {
 	Sitemap     string `json:"sitemap" db:"sitemap"`
 }
 
-// GetTableName get table name
+// GetTableName get table name.
 func (p Page) GetTableName() string {
 	return PageTableName
 }
 
-// CreateTable create table
+// CreateTable create table.
 func (p Page) CreateTable(dbService database.DbService) error {
 	query := fmt.Sprintf("CREATE TABLE IF NOT EXISTS %s ("+
 		"url TEXT PRIMARY KEY NOT NULL,"+
@@ -36,13 +36,13 @@ func (p Page) CreateTable(dbService database.DbService) error {
 	return dbService.Execute(query)
 }
 
-// DropTable drop table
+// DropTable drop table.
 func (p Page) DropTable(dbService database.DbService) error {
 	query := fmt.Sprintf("DROP TABLE IF EXISTS %s", PageTableName)
 	return dbService.Execute(query)
 }
 
-// SelectAll select all rows
+// SelectAll select all rows.
 func (p Page) SelectAll(dbService database.DbService) ([]Page, error) {
 	query := fmt.Sprintf("SELECT * FROM %s", PageTableName)
 	connect, err := dbService.Connect()
@@ -55,7 +55,7 @@ func (p Page) SelectAll(dbService database.DbService) ([]Page, error) {
 	return result, err
 }
 
-// AddOrUpdate add or update row
+// AddOrUpdate add or update row.
 func (p Page) AddOrUpdate(dbService database.DbService) error {
 	connect, err := dbService.Connect()
 	if err != nil {
@@ -63,14 +63,15 @@ func (p Page) AddOrUpdate(dbService database.DbService) error {
 	}
 	defer connect.Close()
 	destValue := &Page{}
-	err = connect.GetContext(context.Background(), destValue, fmt.Sprintf("SELECT * from %s WHERE url=$1 LIMIT 1", PageTableName), p.URL)
+	err = connect.GetContext(context.Background(), destValue,
+		fmt.Sprintf("SELECT * from %s WHERE url=$1 LIMIT 1", PageTableName), p.URL)
 	if err != nil {
 		return p.Insert(dbService)
 	}
 	return p.Update(dbService)
 }
 
-// Insert insert data to table
+// Insert insert data to table.
 func (p Page) Insert(dbService database.DbService) error {
 	connect, err := dbService.Connect()
 	if err != nil {
@@ -82,7 +83,7 @@ func (p Page) Insert(dbService database.DbService) error {
 	return err
 }
 
-// Update update data in table
+// Update update data in table.
 func (p Page) Update(dbService database.DbService) error {
 	connect, err := dbService.Connect()
 	if err != nil {
@@ -94,7 +95,7 @@ func (p Page) Update(dbService database.DbService) error {
 	return err
 }
 
-// Delete delete data from table
+// Delete delete data from table.
 func (p Page) Delete(dbService database.DbService) error {
 	connect, err := dbService.Connect()
 	if err != nil {

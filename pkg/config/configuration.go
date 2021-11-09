@@ -12,7 +12,7 @@ import (
 	generators "github.com/digital-technology-agency/web-scan/pkg/services/generators"
 )
 
-// Configuration configuration type
+// Configuration configuration type.
 type Configuration struct {
 	ProcessCount     int                  `json:"process_count"`
 	Alphabet         string               `json:"alphabet"`
@@ -25,7 +25,7 @@ type Configuration struct {
 	ProtocolTypes    []string             `json:"protocol_types"`
 }
 
-// Default default configuration
+// Default default configuration.
 func Default() Configuration {
 	return Configuration{
 		ProcessCount:     1,
@@ -43,7 +43,7 @@ func Default() Configuration {
 	}
 }
 
-// Load configuration from file
+// Load configuration from file.
 func Load(path string) (*Configuration, error) {
 	bytes, err := ioutil.ReadFile(path)
 	if err != nil {
@@ -57,33 +57,33 @@ func Load(path string) (*Configuration, error) {
 	return &result, nil
 }
 
-// Validate validate property params
+// Validate validate property params.
 func (cfg Configuration) Validate() error {
 	if cfg.ProcessCount <= 0 {
-		return errors.New("Поле [process_count] - должно быть больше 0")
+		return errors.New("поле [process_count] - должно быть больше 0")
 	}
 	if strings.TrimSpace(strings.ToLower(cfg.Alphabet)) == "" {
-		return errors.New("Поле [alphabet] - должно содержать набор символов")
+		return errors.New("поле [alphabet] - должно содержать набор символов")
 	}
 	if cfg.URLLen <= 0 {
-		return errors.New("Поле [url_len] - должно быть больше 0")
+		return errors.New("поле [url_len] - должно быть больше 0")
 	}
 	if cfg.ConcurrencyCount <= 0 {
-		return errors.New("Поле [concurrency_count] - должно быть больше 0")
+		return errors.New("поле [concurrency_count] - должно быть больше 0")
 	}
 	if !env.CheckStore(cfg.DataStoreType) {
-		return errors.New("Поле [data_store_type] - должно содержать значение из предложенных вариантов")
+		return errors.New("поле [data_store_type] - должно содержать значение из предложенных вариантов")
 	}
 	if !env.CheckGenerator(cfg.GeneratorType) {
-		return errors.New("Поле [generator_type] - должно содержать значение из предложенных вариантов")
+		return errors.New("поле [generator_type] - должно содержать значение из предложенных вариантов")
 	}
 	if len(cfg.ProtocolTypes) == 0 {
-		return errors.New("Поле [protocol_types] - должно содержать одно или несколько занчение из предложенных вариантов")
+		return errors.New("поле [protocol_types] - должно содержать одно или несколько занчение из предложенных вариантов")
 	}
 	for _, protocolType := range cfg.ProtocolTypes {
 		switch protocolType {
 		default:
-			return errors.New("Поле [protocol_types] - должно содержать одно или несколько занчение из предложенных вариантов")
+			return errors.New("поле [protocol_types] - должно содержать одно или несколько занчение из предложенных вариантов")
 		case env.HTTPProtocol:
 		case env.HTTPSProtocol:
 			continue
@@ -92,17 +92,17 @@ func (cfg Configuration) Validate() error {
 	return nil
 }
 
-// Save configuration save to file
+// Save configuration save to file.
 func (cfg Configuration) Save(path string) error {
 	bytes, err := json.Marshal(cfg)
 	if err != nil {
 		return err
 	}
-	err = ioutil.WriteFile(path, bytes, 0644)
+	err = ioutil.WriteFile(path, bytes, 0o644)
 	return err
 }
 
-// InitGenerator init generator from type
+// InitGenerator init generator from type.
 func (cfg *Configuration) InitGenerator() {
 	switch cfg.GeneratorType {
 	default:
@@ -118,7 +118,7 @@ func (cfg *Configuration) InitGenerator() {
 	}
 }
 
-// InitDataStore init data store from type
+// InitDataStore init data store from type.
 func (cfg *Configuration) InitDataStore() {
 	switch cfg.DataStoreType {
 	default:

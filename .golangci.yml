@@ -1,0 +1,88 @@
+# https://golangci-lint.run/usage/configuration/
+
+run:
+  skip-dirs: []
+  timeout: 3m
+
+linters-settings:
+  funlen:
+    lines: 60
+    statements: 50
+  gocyclo:
+    min-complexity: 20
+  goimports:
+    local-prefixes: github.com/digital-technology-agency/web-scan
+  lll:
+    line-length: 120
+    tab-width: 2
+
+linters:
+  disable-all: true
+  enable:
+    - asciicheck
+    - bodyclose
+    - deadcode
+    - depguard
+    - dogsled
+    - dupl
+    - errcheck
+    - funlen
+    - gochecknoglobals
+    - gochecknoinits
+    - gocognit
+    - goconst
+    - gocritic
+    - gocyclo
+    - godot
+    - gofmt
+    - goimports
+    - gomodguard
+    - goprintffuncname
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - lll
+    - misspell
+    - nakedret
+    - nestif
+    - nolintlint
+    - prealloc
+    - staticcheck
+    - structcheck
+    - stylecheck
+#    - testpackage # asks for test files in {package}_test, sounds reasonable?
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+    - varcheck
+    - whitespace
+#    - wsl # too opinionated about whitespaces
+
+issues:
+  exclude-rules:
+    - linters: # Id -> ID
+        - stylecheck
+      text: "should be"
+
+    # - linters:
+    #     - lll
+    #   source: "^//go:generate "
+
+    - path: _test\.go
+      linters:
+        - funlen
+        - gochecknoglobals
+        - gochecknoinits
+        - goconst
+        - scopelint
+
+    - path: tests/
+      linters:
+        - funlen
+        - gocognit
+
+    - path: s[cm]_test\.go
+      linters:
+        - dupl

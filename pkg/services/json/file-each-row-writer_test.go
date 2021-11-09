@@ -5,9 +5,7 @@ import (
 	"testing"
 )
 
-var (
-	testFileName = "test-file"
-)
+var testFileName = "test-file"
 
 func TestEachRowWriter_WriteLine(t *testing.T) {
 	type testRow struct {
